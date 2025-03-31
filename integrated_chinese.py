@@ -1,3 +1,8 @@
+# Author: James Kowalik
+# Created: 25/03/25
+# Revised: 
+# Description: 
+
 import pygame
 import os
 import random
