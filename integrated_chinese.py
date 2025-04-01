@@ -14,6 +14,7 @@ pygame.init()
 WIDTH, HEIGHT = 800, 600  # Adjust as needed
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Random Image Viewer")
+font = pygame.font.Font(None, 120)
 
 # Load images from the "images" folder
 IMAGE_FOLDER = "images"  # Change this to your image folder path
@@ -36,19 +37,31 @@ current_image = load_random_image()
 
 # Main loop
 running = True
+count = 1
 while running:
 	screen.fill((0, 0, 0))  # Clear screen
-	img_rect = current_image.get_rect(center=(WIDTH // 2, HEIGHT // 2))
-	screen.blit(current_image, img_rect.topleft)
+	
+	if count % 2:
+		# Show question mark
+		text_surface = font.render("?", True, (255, 255, 255))  # White question mark
+		text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+		screen.blit(text_surface, text_rect)
+	else:
+		# Show image
+		img_rect = current_image.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+		screen.blit(current_image, img_rect.topleft)
+	
 	pygame.display.flip()  # Update display
-
+	
 	for event in pygame.event.get():
-		if event.type == pygame.QUIT:  # Close window
+		if event.type == pygame.QUIT:
 			running = False
 		elif event.type == pygame.KEYDOWN:
-			if event.key == pygame.K_SPACE:  # Load next image
-				current_image = load_random_image()
-			elif event.key == pygame.K_RETURN:  # Exit program
+			if event.key == pygame.K_SPACE:
+				count += 1
+				if count % 2 == 0:
+					current_image = load_random_image()
+			elif event.key == pygame.K_RETURN:
 				running = False
 
 # Quit pygame
