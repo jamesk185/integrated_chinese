@@ -1,6 +1,6 @@
 # Author: James Kowalik
 # Created: 25/03/25
-# Revised: 
+# Revised: 25/04/02
 # Description: Create prompt cards for practising building sentences in Chinese
 #              corresponds to content of "Integrated Chinese Level 1 Part 1"
 
