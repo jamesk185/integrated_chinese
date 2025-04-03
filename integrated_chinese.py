@@ -2,57 +2,110 @@
 # Created: 25/03/25
 # Revised: 25/04/02
 # Description: Create prompt cards for practising building sentences in Chinese
-#              corresponds to content of "Integrated Chinese Level 1 Part 1"
+#			  corresponds to content of "Integrated Chinese Level 1 Part 1"
 
 import pygame
 import os
 import random
 
-# Initialize pygame
-pygame.init()
+# === MENU SETUP ===
 
-# Set up display
-WIDTH, HEIGHT = 800, 600  # Adjust as needed
+lessons = {
+	1: "Lesson 1",
+	2: "Lesson 2",
+	3: "Lesson 3"
+}
+
+exercises = {
+	1: {
+		1: "Who is... this/that... ?",
+		2: "(empty for now)",
+		3: "(empty for now)"
+	},
+	2: {
+		1: "Who is... this/that... ?",  # this matches your current setup
+		2: "(empty)",
+		3: "(empty)"
+	},
+	3: {
+		1: "(empty)",
+		2: "(empty)",
+		3: "(empty)"
+	}
+}
+
+# === USER INPUT ===
+
+print("Select a Lesson:")
+for num, name in lessons.items():
+	print(f"{num} - {name}")
+lesson_choice = int(input("Enter lesson number: "))
+
+print("\nSelect an Exercise:")
+for num, name in exercises.get(lesson_choice, {}).items():
+	print(f"{num} - {name}")
+exercise_choice = int(input("Enter exercise number: "))
+
+# === PYGAME SETUP ===
+
+pygame.init()
+WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Random Image Viewer")
-font = pygame.font.Font(None, 120)
 
-# Load images from the "images" folder
-IMAGE_FOLDER = "images"  # Change this to your image folder path
+# Load images based on selected lesson/exercise
+IMAGE_FOLDER = f"images/l{str(lesson_choice).zfill(2)}q{str(exercise_choice).zfill(2)}"  # folder structure must follow this
 image_files = [f for f in os.listdir(IMAGE_FOLDER) if f.lower().endswith(("png", "jpg", "jpeg", "bmp", "gif"))]
 
 if not image_files:
-	print("No images found in the folder!")
+	print("No images found in the selected folder!")
 	pygame.quit()
 	exit()
 
-# Function to load and scale an image
 def load_random_image():
 	img_path = os.path.join(IMAGE_FOLDER, random.choice(image_files))
 	image = pygame.image.load(img_path)
 	scale = max(image.get_width()/WIDTH, image.get_height()/HEIGHT)
 	return pygame.transform.scale(image, (image.get_width()/scale, image.get_height()/scale))
 
-# Load the first image
 current_image = load_random_image()
 
-# Main loop
+# === MAIN LOOP ===
+
 running = True
-count = 1
+count = 0
+font = pygame.font.Font(None, 80)
 while running:
-	screen.fill((0, 0, 0))  # Clear screen
+	screen.fill((0, 0, 0))
 	
-	if count % 2:
-		# Show question mark
-		text_surface = font.render("?", True, (255, 255, 255))  # White question mark
+	if count > 0:
+		font = pygame.font.Font(None, 120)
+	
+	if count == 0:
+		intro_lines = [
+			"Who is that man?",
+			"Who is this woman?",
+			"Who is this boy?",
+			"Who is that girl?"
+		]
+		line_height = 80  # Adjust spacing as needed
+		start_y = HEIGHT // 2 - (len(intro_lines) * line_height) // 2
+	
+		for i, line in enumerate(intro_lines):
+			text_surface = font.render(line, True, (200, 200, 200))
+			text_rect = text_surface.get_rect(center=(WIDTH // 2, start_y + i * line_height))
+			screen.blit(text_surface, text_rect)
+	
+	elif count % 2:
+		text_surface = font.render("?", True, (255, 255, 255))
 		text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 		screen.blit(text_surface, text_rect)
+	
 	else:
-		# Show image
 		img_rect = current_image.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 		screen.blit(current_image, img_rect.topleft)
 	
-	pygame.display.flip()  # Update display
+	pygame.display.flip()
 	
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
@@ -60,10 +113,9 @@ while running:
 		elif event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_SPACE:
 				count += 1
-				if count % 2 == 0:
+				if count and count % 2 == 0:
 					current_image = load_random_image()
 			elif event.key == pygame.K_RETURN:
 				running = False
 
-# Quit pygame
 pygame.quit()
