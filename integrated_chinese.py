@@ -62,13 +62,20 @@ if not image_files:
 	pygame.quit()
 	exit()
 
-def load_random_image():
-	img_path = os.path.join(IMAGE_FOLDER, random.choice(image_files))
+def load_image(img_id):
+	img_path = os.path.join(IMAGE_FOLDER, [x for x in image_files if img_id in x][0])
 	image = pygame.image.load(img_path)
 	scale = max(image.get_width()/WIDTH, image.get_height()/HEIGHT)
 	return pygame.transform.scale(image, (image.get_width()/scale, image.get_height()/scale))
 
-current_image = load_random_image()
+l02_q01 = {"01": "woman", "02": "boy", "03": "girl", "04": "woman"}
+
+def choose_random():
+	img_id = random.choice(list(l02_q01.keys()))
+	demon = random.choice(["this", "that"])
+	
+
+current_image = load_image()
 
 # === MAIN LOOP ===
 
@@ -119,3 +126,5 @@ while running:
 				running = False
 
 pygame.quit()
+
+
