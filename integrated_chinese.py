@@ -7,6 +7,7 @@
 import pygame
 import os
 import random
+import subprocess
 
 # === MENU SETUP ===
 
@@ -46,89 +47,20 @@ for num, name in exercises.get(lesson_choice, {}).items():
 	print(f"{num} - {name}")
 exercise_choice = int(input("Enter exercise number: "))
 
-# === PYGAME SETUP ===
-
-pygame.init()
-WIDTH, HEIGHT = 800, 600
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Random Image Viewer")
-
-l02_q01 = {"01": "F", "02": "m", "03": "f", "04": "M"}
-
-def choose_random():
-	img_id = random.choice(list(l02_q01.keys()))
-	demon = random.choice(["this", "that"])
-	gender = l02_q01.get(img_id)
-	return img_id, demon, gender
+# Select lesson folder
+lesson_folder = f"lessons/{str(lesson_choice).zfill(2)}"
+exercise_choice = str(exercise_choice).zfill(2)
+lesson_py = lesson_folder + f"/l{str(lesson_choice).zfill(2)}_q{exercise_choice}.py"
 
 # Load images based on selected lesson/exercise
-IMAGE_FOLDER = f"images/l{str(lesson_choice).zfill(2)}q{str(exercise_choice).zfill(2)}"  # folder structure must follow this
-image_files = [f for f in os.listdir(IMAGE_FOLDER) if f.lower().endswith(("png", "jpg", "jpeg", "bmp", "gif"))]
+IMAGE_FOLDER = lesson_folder + "/images"
+image_files = [f for f in os.listdir(IMAGE_FOLDER) if f.lower().endswith(("png", "jpg", "jpeg", "bmp", "gif")) and f"q{str(exercise_choice).zfill(2)}_" in f]
 
 if not image_files:
 	print("No images found in the selected folder!")
 	pygame.quit()
 	exit()
 
-def load_image(img_id):
-	img_path = os.path.join(IMAGE_FOLDER, [x for x in image_files if img_id in x][0])
-	image = pygame.image.load(img_path)
-	scale = max(image.get_width()/WIDTH, image.get_height()/HEIGHT)
-	return pygame.transform.scale(image, (image.get_width()/scale, image.get_height()/scale))
-
-
-# === MAIN LOOP ===
-
-running = True
-count = 0
-img_id, demon, gender = choose_random()
-current_image = load_image(img_id)
-font = pygame.font.Font(None, 80)
-while running:
-	screen.fill((0, 0, 0))
-	
-	if count > 0:
-		font = pygame.font.Font(None, 120)
-	
-	if count == 0:
-		intro_lines = [
-			"Who is that man?",
-			"Who is this woman?",
-			"Who is this boy?",
-			"Who is that girl?"
-		]
-		line_height = 80  # Adjust spacing as needed
-		start_y = HEIGHT // 2 - (len(intro_lines) * line_height) // 2
-	
-		for i, line in enumerate(intro_lines):
-			text_surface = font.render(line, True, (200, 200, 200))
-			text_rect = text_surface.get_rect(center=(WIDTH // 2, start_y + i * line_height))
-			screen.blit(text_surface, text_rect)
-	
-	elif count % 2:
-		text_surface = font.render(demon + " + " + gender + " + " + "?", True, (255, 255, 255))
-		text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2))
-		screen.blit(text_surface, text_rect)
-	
-	else:
-		img_rect = current_image.get_rect(center=(WIDTH // 2, HEIGHT // 2))
-		screen.blit(current_image, img_rect.topleft)
-	
-	pygame.display.flip()
-	
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-			running = False
-		elif event.type == pygame.KEYDOWN:
-			if event.key == pygame.K_SPACE:
-				count += 1
-				if count and not count % 2:
-					current_image = load_image(img_id)
-				elif count % 2:
-					img_id, demon, gender = choose_random()
-			elif event.key == pygame.K_RETURN:
-				running = False
-
-pygame.quit()
+subprocess.run(["python3", lesson_py, IMAGE_FOLDER, exercise_choice])
 
 
