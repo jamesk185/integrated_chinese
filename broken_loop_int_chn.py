@@ -1,8 +1,8 @@
 # Author: James Kowalik
 # Created: 25/03/25
-# Revised: 25/04/04
+# Revised: 25/04/02
 # Description: Create prompt cards for practising building sentences in Chinese
-#              corresponds to content of "Integrated Chinese Level 1 Part 1"
+#			  corresponds to content of "Integrated Chinese Level 1 Part 1"
 
 import pygame
 import os
@@ -53,12 +53,12 @@ WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Random Image Viewer")
 
-l02_q01 = {"01": "F", "02": "m", "03": "f", "04": "M"}
+l02_q01 = {"01": "woman", "02": "boy", "03": "girl", "04": "man"}
 
 def choose_random():
 	img_id = random.choice(list(l02_q01.keys()))
 	demon = random.choice(["this", "that"])
-	gender = l02_q01.get(img_id)
+	gender = "M" if l02_q01.get(img_id) in ["boy", "man"] else "F"
 	return img_id, demon, gender
 
 # Load images based on selected lesson/exercise
@@ -76,13 +76,12 @@ def load_image(img_id):
 	scale = max(image.get_width()/WIDTH, image.get_height()/HEIGHT)
 	return pygame.transform.scale(image, (image.get_width()/scale, image.get_height()/scale))
 
+current_image = load_image("01")
 
 # === MAIN LOOP ===
 
 running = True
 count = 0
-img_id, demon, gender = choose_random()
-current_image = load_image(img_id)
 font = pygame.font.Font(None, 80)
 while running:
 	screen.fill((0, 0, 0))
@@ -106,6 +105,7 @@ while running:
 			screen.blit(text_surface, text_rect)
 	
 	elif count % 2:
+		img_id, demon, gender = choose_random()
 		text_surface = font.render(demon + " + " + gender + " + " + "?", True, (255, 255, 255))
 		text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 		screen.blit(text_surface, text_rect)
@@ -124,8 +124,6 @@ while running:
 				count += 1
 				if count and not count % 2:
 					current_image = load_image(img_id)
-				elif count % 2:
-					img_id, demon, gender = choose_random()
 			elif event.key == pygame.K_RETURN:
 				running = False
 
