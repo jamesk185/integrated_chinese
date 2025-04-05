@@ -41,13 +41,14 @@ count = 0
 img_id, demon, gender = choose_random()
 current_image = load_image(img_id)
 font = pygame.font.Font(None, 80)
+helpscreen = None
 while running:
 	screen.fill((0, 0, 0))
 	
 	if count > 0:
 		font = pygame.font.Font(None, 120)
 	
-	if count == 0:
+	if not helpscreen and count == 0:
 		intro_lines = [
 			"Who is that man?",
 			"Who is this woman?",
@@ -62,8 +63,13 @@ while running:
 			text_rect = text_surface.get_rect(center=(WIDTH // 2, start_y + i * line_height))
 			screen.blit(text_surface, text_rect)
 	
-	elif count % 2:
+	elif not helpscreen and count % 2:
 		text_surface = font.render(demon + " + " + gender + " + " + "?", True, (255, 255, 255))
+		text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+		screen.blit(text_surface, text_rect)
+	
+	elif helpscreen:
+		text_surface = font.render("{some help screen}", True, (255, 255, 255))
 		text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 		screen.blit(text_surface, text_rect)
 	
@@ -74,6 +80,7 @@ while running:
 	pygame.display.flip()
 	
 	for event in pygame.event.get():
+		helpscreen = None
 		if event.type == pygame.QUIT:
 			running = False
 		elif event.type == pygame.KEYDOWN:
@@ -83,6 +90,8 @@ while running:
 					current_image = load_image(img_id)
 				elif count % 2:
 					img_id, demon, gender = choose_random()
+			elif event.key == pygame.K_TAB:
+				helpscreen = "YES"
 			elif event.key == pygame.K_RETURN:
 				running = False
 
