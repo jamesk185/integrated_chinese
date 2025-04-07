@@ -1,6 +1,6 @@
 # Author: James Kowalik
-# Created: 25/04/24
-# Revised: 
+# Created: 25/04/04
+# Revised: 25/04/07
 # Description: Integrated Chinese lesson 02 question 01
 
 import pygame
