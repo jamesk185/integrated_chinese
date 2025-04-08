@@ -18,17 +18,18 @@ WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Integrated Chinese Lesson 02 Exercise 03")
 
-l02_q03 = {"01": "older_sister", "02": "younger_brother", "03": "oldest_brother"}
+l02_q03_1 = {"01": "older_sister", "02": "younger_brother", "03": "oldest_brother"}
+l02_q03_2 = {"04": "daughter", "05": "son"}
 
 def choose_random():
-	img_id = random.choice(list(l02_q03.keys()))
-	child = random.choice(["👨‍👩‍👧", "👪"])
+	img_id = random.choice(list(l02_q03_1.keys()))
+	child = random.choice(list(l02_q03_2.keys()))
 #	ans = random.choice(["✓", "✗"])
 	ans = random.choice(["+", "-"])
 	return img_id, child, ans
 
-def load_image(img_id):
-	img_path = os.path.join(IMAGE_FOLDER, [x for x in image_files if "_" + img_id in x][0])
+def load_image(img):
+	img_path = os.path.join(IMAGE_FOLDER, [x for x in image_files if "_" + img in x][0])
 	image = pygame.image.load(img_path)
 	scale = max(image.get_width()/WIDTH, image.get_height()/HEIGHT)
 	return pygame.transform.scale(image, (image.get_width()/scale, image.get_height()/scale))
@@ -42,7 +43,7 @@ running = True
 count = 0
 img_id, child, ans = choose_random()
 current_image = load_image(img_id)
-font = pygame.font.SysFont("Noto Sans", 80)
+font = pygame.font.SysFont("Noto Sans", 40)
 helpscreen = None
 while running:
 	screen.fill((0, 0, 0))
@@ -64,7 +65,7 @@ while running:
 			text_rect = text_surface.get_rect(center=(WIDTH // 2, start_y + i * line_height))
 			screen.blit(text_surface, text_rect)
 	
-	elif not helpscreen and not count % 2:
+	elif not helpscreen and count == 3:
 		text_surface = font.render(ans, True, (255, 255, 255))
 		text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 		screen.blit(text_surface, text_rect)
@@ -85,7 +86,6 @@ while running:
 			"Does your eldest brother gāo have a daughter? = Gāo dàgē yǒu nǚ'ér ma?",
 			"No = Méiyǒu, tā méiyǒu nǚ'ér",
 			"Does gāo whenzong have an older sister? = Gāo whénzhōng yǒu jiějie ma?",
-			"Who is that girl = nà ge nǚ háizi shì shéi",
 			"No = méiyǒu, tā méiyǒu jiějie",
 			"Does your eldest brother gāo have a son? = Gāo dàgē yǒu érzi ma?",
 			"Yes = shi, tá yǒu érzi"
@@ -111,9 +111,13 @@ while running:
 		elif event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_SPACE:
 				count += 1
-				if count and count % 2:
+				if count == 4:
+					count = 1
+				if count == 1:
 					current_image = load_image(img_id)
-				elif not count % 2:
+				elif count == 2:
+					current_image = load_image(child)
+				elif count == 3:
 					img_id, child, ans = choose_random()
 			elif event.key == pygame.K_TAB:
 				helpscreen = "YES"
