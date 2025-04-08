@@ -19,14 +19,14 @@ lessons = {
 
 exercises = {
 	1: {
-		1: "Who is... this/that... ?",
-		2: "(empty for now)",
-		3: "(empty for now)"
+		1: "(empty)",
+		2: "(empty)",
+		3: "(empty)"
 	},
 	2: {
 		1: "Who is... this/that... ?",  # this matches your current setup
 		2: "(empty)",
-		3: "(empty)"
+		3: "Does your... have a...?"
 	},
 	3: {
 		1: "(empty)",

@@ -1,7 +1,7 @@
 # Author: James Kowalik
-# Created: 25/04/04
-# Revised: 25/04/07
-# Description: Integrated Chinese lesson 02 question 01
+# Created: 25/04/08
+# Revised: 
+# Description: Integrated Chinese lesson 02 question 03
 
 import pygame
 import os
@@ -16,15 +16,16 @@ exercise_choice = sys.argv[2]
 pygame.init()
 WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Integrated Chinese Lesson 02 Exercise 01")
+pygame.display.set_caption("Integrated Chinese Lesson 02 Exercise 03")
 
-l02_q01 = {"01": "F", "02": "m", "03": "f", "04": "M"}
+l02_q03 = {"01": "older_sister", "02": "younger_brother", "03": "oldest_brother"}
 
 def choose_random():
-	img_id = random.choice(list(l02_q01.keys()))
-	demon = random.choice(["this", "that"])
-	gender = l02_q01.get(img_id)
-	return img_id, demon, gender
+	img_id = random.choice(list(l02_q03.keys()))
+	child = random.choice(["👨‍👩‍👧", "👪"])
+#	ans = random.choice(["✓", "✗"])
+	ans = random.choice(["+", "-"])
+	return img_id, child, ans
 
 def load_image(img_id):
 	img_path = os.path.join(IMAGE_FOLDER, [x for x in image_files if "_" + img_id in x][0])
@@ -34,11 +35,12 @@ def load_image(img_id):
 
 image_files = [f for f in os.listdir(IMAGE_FOLDER) if f.lower().endswith(("png", "jpg", "jpeg", "bmp", "gif")) and f"q{exercise_choice}_" in f]
 
+
 # === MAIN LOOP ===
 
 running = True
 count = 0
-img_id, demon, gender = choose_random()
+img_id, child, ans = choose_random()
 current_image = load_image(img_id)
 font = pygame.font.SysFont("Noto Sans", 80)
 helpscreen = None
@@ -50,10 +52,9 @@ while running:
 	
 	if not helpscreen and count == 0:
 		intro_lines = [
-			"Who is that man?",
-			"Who is this woman?",
-			"Who is this boy?",
-			"Who is that girl?"
+			"Does your eldest brother have a daughter?",
+			"Does your younger brother have a son?",
+			"Does your older sister have a daughter?",
 		]
 		line_height = 80  # Adjust spacing as needed
 		start_y = HEIGHT // 2 - (len(intro_lines) * line_height) // 2
@@ -63,8 +64,8 @@ while running:
 			text_rect = text_surface.get_rect(center=(WIDTH // 2, start_y + i * line_height))
 			screen.blit(text_surface, text_rect)
 	
-	elif not helpscreen and count % 2:
-		text_surface = font.render(demon + " + " + gender + " + " + "?", True, (255, 255, 255))
+	elif not helpscreen and not count % 2:
+		text_surface = font.render(ans, True, (255, 255, 255))
 		text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 		screen.blit(text_surface, text_rect)
 	
@@ -72,25 +73,22 @@ while running:
 		font = pygame.font.SysFont("Noto Sans", 20)
 		
 		help_lines = [
-			"Who is .. ? = ... shì shéi?",
-			"that ... = nà ...",
-			"this ... = zhè ...",
-			"person = rén",
-			"man = nán rén",
-			"woman = nǚ rén",
-			"boy = nán háizi",
-			"girl = nǚ háizi",
-			"*** Don't forget 'ge' after this/that",
+			"older sister = jiějie",
+			"younger brother = dìdi",
+			"eldest brother = dàgē"
+			"child = háizi",
+			"daughter = nǚ'ér",
+			"son = érzi",
+			"you = ní",
+			"have = yǒu",
 			"",
-			"M = man = lǐ kāng shēng",
-			"F = woman = sūn lì",
-			"m = boy = xià yu",
-			"f = girl = liú chǔ tián",
-			"",
-			"Who is that man = nà ge nán rén shì shéi",
-			"Who is this woman = zhè ge nǚ rén shì shéi",
-			"Who is this boy = zhè ge nán háizi shì shéi",
-			"Who is that girl = nà ge nǚ háizi shì shéi"
+			"Does your eldest brother gāo have a daughter? = Gāo dàgē yǒu nǚ'ér ma?",
+			"No = Méiyǒu, tā méiyǒu nǚ'ér",
+			"Does gāo whenzong have an older sister? = Gāo whénzhōng yǒu jiějie ma?",
+			"Who is that girl = nà ge nǚ háizi shì shéi",
+			"No = méiyǒu, tā méiyǒu jiějie",
+			"Does your eldest brother gāo have a son? = Gāo dàgē yǒu érzi ma?",
+			"Yes = shi, tá yǒu érzi"
 		]
 		line_height = 27.5  # Adjust spacing as needed
 		start_y = 50
@@ -113,10 +111,10 @@ while running:
 		elif event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_SPACE:
 				count += 1
-				if count and not count % 2:
+				if count and count % 2:
 					current_image = load_image(img_id)
-				elif count % 2:
-					img_id, demon, gender = choose_random()
+				elif not count % 2:
+					img_id, child, ans = choose_random()
 			elif event.key == pygame.K_TAB:
 				helpscreen = "YES"
 			elif event.key == pygame.K_RETURN:
