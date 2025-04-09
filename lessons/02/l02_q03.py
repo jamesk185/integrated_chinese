@@ -24,8 +24,7 @@ l02_q03_2 = {"04": "daughter", "05": "son"}
 def choose_random():
 	img_id = random.choice(list(l02_q03_1.keys()))
 	child = random.choice(list(l02_q03_2.keys()))
-#	ans = random.choice(["✓", "✗"])
-	ans = random.choice(["+", "-"])
+	ans = random.choice(["✓", "✗"])
 	return img_id, child, ans
 
 def load_image(img):
@@ -49,7 +48,7 @@ while running:
 	screen.fill((0, 0, 0))
 	
 	if count > 0:
-		font = pygame.font.SysFont("Noto Sans", 120)
+		font = pygame.font.Font("fonts/DejaVuSans.ttf", 220)
 	
 	if not helpscreen and count == 0:
 		intro_lines = [
@@ -80,15 +79,17 @@ while running:
 			"child = háizi",
 			"daughter = nǚ'ér",
 			"son = érzi",
-			"you = ní",
+			"you = nǐ",
 			"have = yǒu",
 			"",
-			"Does your eldest brother gāo have a daughter? = Gāo dàgē yǒu nǚ'ér ma?",
-			"No = Méiyǒu, tā méiyǒu nǚ'ér",
-			"Does gāo whenzong have an older sister? = Gāo whénzhōng yǒu jiějie ma?",
-			"No = méiyǒu, tā méiyǒu jiějie",
-			"Does your eldest brother gāo have a son? = Gāo dàgē yǒu érzi ma?",
-			"Yes = shi, tá yǒu érzi"
+			"Luke = younger brother",
+			"Haley = older sister",
+			"Jobe = eldest brother",
+			"",
+			"Does your eldest brother have a daughter? = nǐ dàgē yǒu nǚ'ér ma?",
+			"No = méiyǒu, tā méiyǒu nǚ'ér",
+			"Does your younger brother have a son? = nǐ dìdi yǒu érzi ma?",
+			"Yes = shì, tā yǒu érzi"
 		]
 		line_height = 27.5  # Adjust spacing as needed
 		start_y = 50
