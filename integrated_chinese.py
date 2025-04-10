@@ -24,9 +24,9 @@ exercises = {
 		3: "(empty)"
 	},
 	2: {
-		1: "Who is... this/that... ?",  # this matches your current setup
-		2: "(empty)",
-		3: "Does your... have a...?"
+		1: "Who is this/that... ? That/that is {name}.",  # this matches your current setup
+		2: "Who is this/that? That's my... .",
+		3: "Does your... have a... ?"
 	},
 	3: {
 		1: "(empty)",
