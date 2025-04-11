@@ -19,7 +19,7 @@ lessons = {
 
 exercises = {
 	1: {
-		1: "(empty)",
+		1: "Hello. What's your name?",
 		2: "(empty)",
 		3: "(empty)"
 	},
@@ -55,11 +55,6 @@ lesson_py = lesson_folder + f"/l{str(lesson_choice).zfill(2)}_q{exercise_choice}
 # Load images based on selected lesson/exercise
 IMAGE_FOLDER = lesson_folder + "/images"
 image_files = [f for f in os.listdir(IMAGE_FOLDER) if f.lower().endswith(("png", "jpg", "jpeg", "bmp", "gif")) and f"q{str(exercise_choice).zfill(2)}_" in f]
-
-if not image_files:
-	print("No images found in the selected folder!")
-	pygame.quit()
-	exit()
 
 subprocess.run(["python3", lesson_py, IMAGE_FOLDER, exercise_choice])
 
