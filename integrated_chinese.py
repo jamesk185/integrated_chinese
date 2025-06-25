@@ -27,7 +27,7 @@ exercises = {
 		1: "Who is this/that... ? That/that is {name}.",  # this matches your current setup
 		2: "Who is this/that? That's my... .",
 		3: "Does your... have a... ?",
-		4: "How many family members do you have?"
+		4: "How many people are in your family?"
 	},
 	3: {
 		1: "(empty)",

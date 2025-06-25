@@ -66,26 +66,24 @@ while running:
 		font = pygame.font.SysFont("Noto Sans", 20)
 		
 		help_lines = [
-			"older sister = jiějie",
-			"younger brother = dìdi",
-			"eldest brother = dàgē"
-			"child = háizi",
-			"daughter = nǚ'ér",
-			"son = érzi",
-			"you = nǐ",
-			"have = yǒu",
+			"family/home = jiā",
+			"how many = jǐ",
+			"measure word for people in family = kǒu",
+			"2 = liǎng",
+			"3 = sān",
+			"4 = sì",
+			"5 = wǔ",
+			"6 = liù",
+			"7 = qī",
+			"8 = bā",
+			"9 = jiǔ",
+			"10 = shí",
 			"",
-			"Luke = younger brother",
-			"Haley = older sister",
-			"Jobe = eldest brother",
-			"",
-			"Does your eldest brother have a daughter? = nǐ dàgē yǒu nǚ'ér ma?",
-			"No = méiyǒu, tā méiyǒu nǚ'ér",
-			"Does your younger brother have a son? = nǐ dìdi yǒu érzi ma?",
-			"Yes = shì, tā yǒu érzi"
+			"How many people are there in your family? = Nǐ jiā yǒu jǐ kǒu rén?",
+			"There are five people in my family = Wǒ jiā yǒu wǔ kǒu rén"
 		]
 		line_height = 27.5  # Adjust spacing as needed
-		start_y = 50
+		start_y = 100
 	
 		for i, line in enumerate(help_lines):
 			text_surface = font.render(line, True, (200, 200, 200))
