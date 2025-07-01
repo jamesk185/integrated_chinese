@@ -21,10 +21,10 @@ pygame.display.set_caption("Integrated Chinese Lesson 02 Exercise 05")
 l02_q05_1 = {"01": "older_sister", "02": "younger_brother", "03": "older_brother", "04": "younger_sister", "05": "mum", "06": "dad"}
 
 def choose_random():
+	# remember to remove "ans" elsewhere
 	img_id = random.choice(list(l02_q03_1.keys()))
 	child = random.choice(list(l02_q03_2.keys()))
-	ans = random.choice(["✓", "✗"])
-	return img_id, child, ans
+	return img_id, child
 
 def load_image(img):
 	img_path = os.path.join(IMAGE_FOLDER, [x for x in image_files if "_" + img in x][0])
